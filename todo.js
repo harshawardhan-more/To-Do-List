@@ -1,14 +1,10 @@
-let todoList=[
-    {
-        item:'buy milk',
-        duedate:'4/4/2025'
-    },
-    {
-        item:'go to college',
-        duedate:'4/4/2025'
-    }
-    ];
-displayItems(); 
+let todoList;
+todoList=JSON.parse(localStorage.getItem('todoList')) ||[];
+displayItems();
+
+function saveToLocalStorage() {
+  localStorage.setItem('todoList', JSON.stringify(todoList));
+}
 
 function addToDo() {
     let inputElement=document.querySelector('#todo-input');
@@ -22,6 +18,7 @@ function addToDo() {
     todoList.push({item:todoItem,duedate:todoDate});
     inputElement.value='';
     dateElement.value='';
+    saveToLocalStorage();
 
     displayItems();
 }
@@ -35,7 +32,9 @@ newHtml+=`
 <span>${item}</span>
 <span>${duedate}</span>
 <button class="btn-delete" onclick="todoList.splice(${i},1);
-displayItems(); ">Delete</button>
+displayItems();
+saveToLocalStorage();
+">Delete</button>
 `;
 }
 containerElement.innerHTML=newHtml;
